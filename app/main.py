@@ -9,10 +9,12 @@ from markupsafe import escape
 from pyxform import xls2xform
 from uuid import uuid4 as uuid
 from urllib.parse import unquote
+from flask_cors import CORS
 
 
 def app():
     app = Flask(__name__)
+    CORS(app)
     logger = logging.getLogger(__name__)
 
     @app.route("/")
@@ -37,9 +39,11 @@ def app():
         with TemporaryDirectory() as temp_dir_name:
             try:
                 with open(
-                    os.path.join(temp_dir_name, xlsform_formid_fallback + ".xml"), "w+"
+                    os.path.join(
+                        temp_dir_name, xlsform_formid_fallback + ".xml"), "w+"
                 ) as xform, open(
-                    os.path.join(temp_dir_name, xlsform_formid_fallback + file_ext),
+                    os.path.join(
+                        temp_dir_name, xlsform_formid_fallback + file_ext),
                     "wb",
                 ) as xlsform:
                     xlsform.write(request_data)
@@ -54,7 +58,8 @@ def app():
                         logger.warning(convert_status)
 
                     if os.path.isfile(xform.name):
-                        itemsets_path = os.path.join(temp_dir_name, "itemsets.csv")
+                        itemsets_path = os.path.join(
+                            temp_dir_name, "itemsets.csv")
                         if os.path.isfile(itemsets_path):
                             try:
                                 with open(itemsets_path, "r") as itemsets:
