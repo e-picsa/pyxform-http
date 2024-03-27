@@ -9,10 +9,12 @@ from markupsafe import escape
 from pyxform import xls2xform
 from uuid import uuid4 as uuid
 from urllib.parse import unquote
+from flask_cors import CORS
 
 
 def app():
     app = Flask(__name__)
+    CORS(app)
     logger = logging.getLogger(__name__)
 
     @app.route("/")
